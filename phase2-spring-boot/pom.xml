@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Maven POM: Spring Boot projesinin bağımlılık ve derleme tanımı -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- POM model sürümü -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- parent: Spring Boot'un hazır sürüm yönetiminden (BOM) yararlanırız -->
+    <parent>
+        <!-- Spring Boot parent POM grup kimliği -->
+        <groupId>org.springframework.boot</groupId>
+        <!-- Spring Boot parent artifact adı -->
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <!-- Spring Boot 3.2.x satırı (Java 17 ile uyumlu) -->
+        <version>3.2.5</version>
+        <!-- relativePath boş: parent'ı Maven merkezi depodan indir -->
+        <relativePath/>
+    </parent>
+
+    <!-- Bu modülün Maven koordinatları -->
+    <groupId>com.thy</groupId>
+    <!-- artifactId: proje / jar adı -->
+    <artifactId>phase2-spring-boot</artifactId>
+    <!-- version: geliştirme sürümü -->
+    <version>1.0.0-SNAPSHOT</version>
+    <!-- name: okunabilir proje adı -->
+    <name>phase2-spring-boot</name>
+    <!-- description: kısa açıklama -->
+    <description>Faz 2 - Uçuş ve Mil Hesaplama Spring Boot REST API</description>
+
+    <!-- properties: Java sürümü ve kodlama -->
+    <properties>
+        <!-- Java 17 ile derle -->
+        <java.version>17</java.version>
+        <!-- Kaynak dosya kodlaması -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- dependencies: sadece istenen kütüphaneler -->
+    <dependencies>
+        <!-- Spring Web: REST Controller, gömülü Tomcat, JSON (Jackson) desteği -->
+        <dependency>
+            <!-- Spring Boot starter grup kimliği -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- spring-boot-starter-web: HTTP API geliştirmek için temel starter -->
+            <artifactId>spring-boot-starter-web</artifactId>
+            <!-- version parent POM tarafından yönetilir (yazmaya gerek yok) -->
+        </dependency>
+
+        <!-- Lombok: getter/setter/builder gibi tekrarlayan kodu derleme anında üretir -->
+        <dependency>
+            <!-- Lombok grup kimliği -->
+            <groupId>org.projectlombok</groupId>
+            <!-- Lombok artifact adı -->
+            <artifactId>lombok</artifactId>
+            <!-- optional: IDE / diğer modüller zorunlu görmesin -->
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <!-- build: Spring Boot paketleme eklentisi -->
+    <build>
+        <plugins>
+            <!-- spring-boot-maven-plugin: çalıştırılabilir fat-jar üretir -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Lombok'u fat-jar içine gömme (sadece derleme için) -->
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,15 @@
+# Maven çıktısı
+target/
+
+# IntelliJ
+.idea/*
+!.idea/inspectionProfiles/
+!.idea/inspectionProfiles/**
+*.iml
+
+# Derleme artıkları
+*.class
+out/
+
+# OS
+.DS_Store
