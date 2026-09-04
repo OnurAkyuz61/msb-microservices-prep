@@ -1,78 +1,42 @@
 // Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
 package com.msb.flightmiles.model; // model: veri / varlık (entity) sınıflarının paketi
 
+// Lombok: @AllArgsConstructor anotasyonunu içeri alır
+import lombok.AllArgsConstructor; // derleme sırasında tüm alanları alan constructor üretir
+// Lombok: @Builder anotasyonunu içeri alır
+import lombok.Builder; // Flight.builder()...build() ile okunaklı nesne üretimi sağlar
+// Lombok: @Data anotasyonunu içeri alır
+import lombok.Data; // getter, setter, toString, equals, hashCode kodlarını otomatik üretir
+// Lombok: @NoArgsConstructor anotasyonunu içeri alır
+import lombok.NoArgsConstructor; // parametresiz boş constructor üretir
+
+// @Data: arka planda getX/setX, toString, equals ve hashCode metotlarını yazar (elle yazmaya gerek kalmaz)
+@Data // sınıf seviyesinde: tüm alanlar için boilerplate kodu derleme anında üretir
+// @NoArgsConstructor: new Flight() şeklinde parametresiz nesne oluşturmayı mümkün kılar
+@NoArgsConstructor // boş constructor: framework'ler (ileride JPA/Spring) için sık gerekir
+// @AllArgsConstructor: tüm alanları parametre alan constructor üretir (flightNumber, destination, ...)
+@AllArgsConstructor // dolu constructor: tüm private alanları tek seferde set eder
+// @Builder: Builder deseni üretir; Flight.builder().flightNumber("TK101").build() yazılabilir
+@Builder // zincirleme (fluent) API ile alan alan nesne kurmayı sağlar
 // Flight sınıfı: Bir uçuşa ait bilgileri tutmak için kullanılır
 public class Flight { // Flight adında bir sınıf (class) tanımlıyoruz
 
     // --- DEĞİŞKENLER (sınıfın alanları / fields) ---
+    // Not: getter/setter/constructor artık Lombok tarafından üretilir; burada sadece alanlar kalır
 
     // Uçuş numarasını metin (String) olarak saklar, örn: "TK1903"
-    private String flightNumber; // private: sadece bu sınıf içinden erişilebilir
+    private String flightNumber; // @Data sayesinde getFlightNumber() / setFlightNumber(...) oluşur
 
     // Uçuşun varış noktasını metin olarak saklar, örn: "Istanbul"
-    private String destination; // Set koleksiyonunda tekrarsız şehir listesi için kullanılır
+    private String destination; // @Data sayesinde getDestination() / setDestination(...) oluşur
 
     // Uçuş mesafesini kilometre cinsinden tam sayı (int) olarak saklar
-    private int distanceKm; // mesafe değeri, örneğin 1500
+    private int distanceKm; // @Data sayesinde getDistanceKm() / setDistanceKm(...) oluşur
 
     // Uçuşun business class olup olmadığını true/false (boolean) olarak saklar
-    private boolean businessClass; // true = business, false = ekonomi
+    private boolean businessClass; // boolean için @Data genelde isBusinessClass() üretir
 
-    // --- CONSTRUCTOR (yapıcı metot): Nesne oluşturulurken çalışır ---
-
-    // Yeni bir Flight nesnesi oluştururken tüm uçuş bilgilerini parametre olarak alır
-    public Flight(String flightNumber, String destination, int distanceKm, boolean businessClass) { // dört parametreli yapıcı
-        this.flightNumber = flightNumber; // gelen uçuş numarasını sınıf değişkenine atar
-        this.destination = destination; // gelen varış noktasını sınıf değişkenine atar
-        this.distanceKm = distanceKm; // gelen mesafe bilgisini sınıf değişkenine atar
-        this.businessClass = businessClass; // gelen business bilgisini sınıf değişkenine atar
-    } // constructor metodunun kapanış süslü parantezi
-
-    // --- GETTER METOTLARI: Değişkenleri dışarıdan güvenli şekilde okumak için ---
-
-    // Uçuş numarasını dışarıya döndüren metot
-    public String getFlightNumber() { // dönüş tipi String olan bir metot
-        return flightNumber; // flightNumber değişkeninin değerini geri verir
-    } // getFlightNumber metodunun kapanış süslü parantezi
-
-    // Varış noktasını dışarıya döndüren metot
-    public String getDestination() { // dönüş tipi String olan bir metot
-        return destination; // destination değişkeninin değerini geri verir
-    } // getDestination metodunun kapanış süslü parantezi
-
-    // Mesafe bilgisini dışarıya döndüren metot
-    public int getDistanceKm() { // dönüş tipi int olan bir metot
-        return distanceKm; // distanceKm değişkeninin değerini geri verir
-    } // getDistanceKm metodunun kapanış süslü parantezi
-
-    // Business class durumunu dışarıya döndüren metot
-    public boolean isBusinessClass() { // boolean için genelde "is" ile başlayan isim kullanılır
-        return businessClass; // businessClass değişkeninin değerini geri verir
-    } // isBusinessClass metodunun kapanış süslü parantezi
-
-    // --- SETTER METOTLARI: Değişkenleri dışarıdan güncellemek için ---
-
-    // Uçuş numarasını değiştirmek için kullanılan metot
-    public void setFlightNumber(String flightNumber) { // void: bir şey döndürmez, sadece atama yapar
-        this.flightNumber = flightNumber; // yeni uçuş numarasını sınıf değişkenine yazar
-    } // setFlightNumber metodunun kapanış süslü parantezi
-
-    // Varış noktasını değiştirmek için kullanılan metot
-    public void setDestination(String destination) { // String tipinde yeni varış alır
-        this.destination = destination; // yeni varış noktasını sınıf değişkenine yazar
-    } // setDestination metodunun kapanış süslü parantezi
-
-    // Mesafe bilgisini değiştirmek için kullanılan metot
-    public void setDistanceKm(int distanceKm) { // int tipinde yeni mesafe alır
-        this.distanceKm = distanceKm; // yeni mesafe değerini sınıf değişkenine yazar
-    } // setDistanceKm metodunun kapanış süslü parantezi
-
-    // Business class bilgisini değiştirmek için kullanılan metot
-    public void setBusinessClass(boolean businessClass) { // boolean tipinde yeni değer alır
-        this.businessClass = businessClass; // yeni business bilgisini sınıf değişkenine yazar
-    } // setBusinessClass metodunun kapanış süslü parantezi
-
-    // --- BİLGİ YAZDIRMA METODU ---
+    // --- BİLGİ YAZDIRMA METODU (iş mantığı; Lombok bunu üretmez, elle yazarız) ---
 
     // Uçuş bilgilerini ekrana (konsola) yazdıran basit bir metot
     public void printFlightInfo() { // void: ekrana yazar, değer döndürmez

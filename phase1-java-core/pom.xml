@@ -1,52 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- IntelliJ'de New Project > Maven ile oluşan pom.xml benzeri proje tanımı -->
+<!-- IntelliJ / Maven proje tanım dosyası: bağımlılıklar ve derleme ayarları burada tutulur -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- POM model sürümü: Maven 4.0.0 şemasını kullanıyoruz -->
+    <!-- POM şema sürümü: Maven'in bu dosyayı nasıl okuyacağını belirler -->
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Grup kimliği: paket kökümüzle aynı (com.msb) -->
+    <!-- groupId: projenin kurumsal paket kökü (Maven koordinatı) -->
     <groupId>com.msb</groupId>
-    <!-- Artifact kimliği: proje / jar adı -->
+    <!-- artifactId: üretilen jar / proje kısa adı -->
     <artifactId>phase1-java-core</artifactId>
-    <!-- Sürüm: öğrenme projesi için 1.0-SNAPSHOT yeterli -->
+    <!-- version: proje sürümü (SNAPSHOT = geliştirme aşamasında) -->
     <version>1.0-SNAPSHOT</version>
 
-    <!-- Proje adı (IntelliJ Project görünümünde görünür) -->
+    <!-- name: IntelliJ ve Maven çıktılarında görünen okunabilir proje adı -->
     <name>phase1-java-core</name>
-    <!-- Kısa açıklama -->
-    <description>Uçuş ve Mil Hesaplama - Java Core alıştırması</description>
+    <!-- description: projenin kısa açıklaması -->
+    <description>Uçuş ve Mil Hesaplama - Java Core + Lombok alıştırması</description>
 
-    <!-- Derleme ayarları -->
+    <!-- properties: derleyici ve kodlama için ortak ayarlar -->
     <properties>
-        <!-- Kaynak kod Java 17 -->
+        <!-- Kaynak kodun Java sürümü -->
         <maven.compiler.source>17</maven.compiler.source>
-        <!-- Çıktı bytecode Java 17 -->
+        <!-- Üretilen bytecode'un Java sürümü -->
         <maven.compiler.target>17</maven.compiler.target>
-        <!-- Dosya kodlaması UTF-8 -->
+        <!-- Kaynak dosyaların karakter kodlaması -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Lombok sürümünü tek yerden yönetmek için özellik -->
+        <lombok.version>1.18.34</lombok.version>
     </properties>
 
-    <!-- jar çalıştırılırken ana sınıf (Main) -->
+    <!-- dependencies: projenin ihtiyaç duyduğu kütüphaneler (şimdilik sadece Lombok) -->
+    <dependencies>
+        <!-- dependency: tek bir kütüphane tanımı başlar -->
+        <dependency>
+            <!-- Lombok'un Maven grup kimliği -->
+            <groupId>org.projectlombok</groupId>
+            <!-- Lombok kütüphanesinin artifact adı -->
+            <artifactId>lombok</artifactId>
+            <!-- Kullanılacak Lombok sürümü (yukarıdaki property'den okunur) -->
+            <version>${lombok.version}</version>
+            <!-- provided: sadece derlemede gerekir, çalışan jar içine gömülmez -->
+            <scope>provided</scope>
+        </dependency>
+        <!-- dependency kapanışı -->
+    </dependencies>
+
+    <!-- build: derleme eklentileri ve paketleme ayarları -->
     <build>
+        <!-- plugins: Maven'in derleme sırasında kullanacağı eklentiler -->
         <plugins>
-            <!-- jar eklentisi: MANIFEST içine Main-Class yazar -->
+            <!-- Java kaynaklarını derleyen eklenti (Lombok annotation processor burada açılır) -->
             <plugin>
+                <!-- maven-compiler-plugin'in grup kimliği -->
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
+                <!-- Derleyici eklentisinin adı -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!-- Eklenti sürümü -->
+                <version>3.13.0</version>
+                <!-- configuration: bu eklentiye özel ayarlar -->
                 <configuration>
+                    <!-- Kaynak Java sürümü -->
+                    <source>17</source>
+                    <!-- Hedef Java sürümü -->
+                    <target>17</target>
+                    <!-- annotationProcessorPaths: derleme sırasında anotasyon işleyicileri -->
+                    <annotationProcessorPaths>
+                        <!-- path: Lombok'u annotation processor olarak kaydeder -->
+                        <path>
+                            <!-- Processor olarak Lombok groupId -->
+                            <groupId>org.projectlombok</groupId>
+                            <!-- Processor olarak Lombok artifactId -->
+                            <artifactId>lombok</artifactId>
+                            <!-- Processor sürümü (dependency ile aynı olmalı) -->
+                            <version>${lombok.version}</version>
+                        </path>
+                        <!-- path kapanışı -->
+                    </annotationProcessorPaths>
+                    <!-- annotationProcessorPaths kapanışı -->
+                </configuration>
+                <!-- configuration kapanışı -->
+            </plugin>
+            <!-- jar eklentisi: çalıştırılabilir jar için Main-Class yazar -->
+            <plugin>
+                <!-- maven-jar-plugin grup kimliği -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <!-- jar paketleme eklentisinin adı -->
+                <artifactId>maven-jar-plugin</artifactId>
+                <!-- Eklenti sürümü -->
+                <version>3.4.2</version>
+                <!-- configuration: jar manifesto ayarları -->
+                <configuration>
+                    <!-- archive: jar arşiv içeriği ayarları -->
                     <archive>
+                        <!-- manifest: META-INF/MANIFEST.MF içeriği -->
                         <manifest>
-                            <!-- java -jar ile çalışınca bu sınıf başlar -->
+                            <!-- mainClass: java -jar ile çalışınca başlayacak sınıf -->
                             <mainClass>com.msb.flightmiles.Main</mainClass>
                         </manifest>
+                        <!-- manifest kapanışı -->
                     </archive>
+                    <!-- archive kapanışı -->
                 </configuration>
+                <!-- configuration kapanışı -->
             </plugin>
+            <!-- jar plugin kapanışı -->
         </plugins>
+        <!-- plugins kapanışı -->
     </build>
+    <!-- build kapanışı -->
 
 </project>

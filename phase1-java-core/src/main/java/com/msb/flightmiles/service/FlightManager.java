@@ -17,9 +17,10 @@ import java.util.Map; // uçuş numarasına göre hızlı arama için
 import java.util.Set; // benzersiz destinasyonlar için
 
 // model paketindeki Flight sınıfını bu dosyada kullanmak için import ederiz
-import com.msb.flightmiles.model.Flight; // Flight: uçuş bilgisi tutan sınıf
+import com.msb.flightmiles.model.Flight; // Flight: Lombok @Data ile getter'ları üretilmiş model sınıfı
 
 // FlightManager sınıfı: uçuşları List / Set / Map ile yönetir ve Stream API kullanır
+// Not: Flight nesnesi burada üretilmez; Main Lombok @Builder ile üretir, biz sadece getter kullanırız
 public class FlightManager { // FlightManager adında bir sınıf tanımlıyoruz
 
     // Sistemdeki tüm uçuşları sırayla tutan liste (List = sıralı koleksiyon)

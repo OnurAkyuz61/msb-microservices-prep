@@ -5,7 +5,7 @@ package com.msb.flightmiles; // uygulama kök paketi: giriş noktası burada
 import java.util.List; // Stream'den dönen List<Flight> tipi için gerekir
 
 // model paketinden Flight sınıfını kullanmak için import ederiz
-import com.msb.flightmiles.model.Flight; // Flight: uçuş bilgisi tutan sınıf
+import com.msb.flightmiles.model.Flight; // Flight: uçuş bilgisi tutan sınıf (Lombok @Builder ile)
 // service paketinden FlightManager sınıfını kullanmak için import ederiz
 import com.msb.flightmiles.service.FlightManager; // FlightManager: List/Set/Map + Stream yönetimi
 // service paketinden MilesCalculator sınıfını kullanmak için import ederiz
@@ -20,16 +20,40 @@ public class Main { // Main adında bir sınıf tanımlıyoruz
         System.out.println("=== Uçuş ve Mil Hesaplama Uygulaması ==="); // başlık satırını yazdır
         System.out.println(); // boş bir satır bırak (okunabilirlik için)
 
-        // --- Flight NESNELERİ OLUŞTURMA (object creation) ---
+        // --- Flight NESNELERİ: Lombok @Builder deseni ile oluşturma ---
+        // new Flight(...) yerine Flight.builder()...build() kullanıyoruz (alan isimleri okunaklı)
 
-        // 1. uçuş: İstanbul, kısa mesafe, ekonomi
-        Flight flight1 = new Flight("TK101", "Istanbul", 850, false); // new: bellekte yeni Flight yaratır
+        // 1. uçuş: İstanbul, kısa mesafe, ekonomi — Builder zinciri başlar
+        Flight flight1 = Flight.builder() // @Builder: boş bir Flight.Builder nesnesi üretir
+                .flightNumber("TK101") // Builder: flightNumber alanını "TK101" yapar
+                .destination("Istanbul") // Builder: destination alanını "Istanbul" yapar
+                .distanceKm(850) // Builder: distanceKm alanını 850 yapar
+                .businessClass(false) // Builder: businessClass alanını false (ekonomi) yapar
+                .build(); // build(): ayarlanan alanlarla gerçek Flight nesnesini oluşturur
+
         // 2. uçuş: New York, uzun mesafe, business
-        Flight flight2 = new Flight("TK1903", "New York", 3200, true); // örnek uçuş no: TK1903
+        Flight flight2 = Flight.builder() // @Builder ile yeni Builder başlat
+                .flightNumber("TK1903") // uçuş numarası TK1903
+                .destination("New York") // varış: New York
+                .distanceKm(3200) // mesafe: 3200 km
+                .businessClass(true) // business class: true
+                .build(); // Flight nesnesini üret ve flight2'ye ata
+
         // 3. uçuş: Antalya, orta mesafe, ekonomi
-        Flight flight3 = new Flight("PC404", "Antalya", 2100, false); // ekonomi sınıfı uçuş
+        Flight flight3 = Flight.builder() // @Builder ile yeni Builder başlat
+                .flightNumber("PC404") // uçuş numarası PC404
+                .destination("Antalya") // varış: Antalya
+                .distanceKm(2100) // mesafe: 2100 km
+                .businessClass(false) // ekonomi sınıfı
+                .build(); // Flight nesnesini üret ve flight3'e ata
+
         // 4. uçuş: yine İstanbul (Set'te "Istanbul" tekrar eklenmeyecek)
-        Flight flight4 = new Flight("TK250", "Istanbul", 450, true); // ikinci business uçuş
+        Flight flight4 = Flight.builder() // @Builder ile yeni Builder başlat
+                .flightNumber("TK250") // uçuş numarası TK250
+                .destination("Istanbul") // varış tekrar İstanbul (Set tekrarı engeller)
+                .distanceKm(450) // mesafe: 450 km
+                .businessClass(true) // ikinci business uçuş
+                .build(); // Flight nesnesini üret ve flight4'e ata
 
         // --- FlightManager İLE KOLEKSİYONLARI DOLDURMA ---
 
@@ -66,7 +90,7 @@ public class Main { // Main adında bir sınıf tanımlıyoruz
         System.out.println("Business uçuş sayısı: " + businessFlights.size()); // kaç business uçuş var
         // for-each ile filtrelenmiş listeyi gezip yazdır
         for (Flight businessFlight : businessFlights) { // her business uçuş için döner
-            businessFlight.printFlightInfo(); // uçuş bilgilerini yazdır
+            businessFlight.printFlightInfo(); // uçuş bilgilerini yazdır (getter'lar Lombok @Data'dan)
             System.out.println("-----"); // ayırıcı çizgi
         } // for-each döngüsünün kapanış süslü parantezi
         System.out.println(); // boş satır
@@ -83,7 +107,7 @@ public class Main { // Main adında bir sınıf tanımlıyoruz
         System.out.println("--- Klasik MilesCalculator (tek uçuş) ---"); // bölüm başlığı
         MilesCalculator calculator = new MilesCalculator(); // klasik hesaplayıcı nesnesi
         int milesForTk1903 = calculator.calculateMiles(flight2); // TK1903 için mil hesapla
-        System.out.println(flight2.getFlightNumber() + " toplam mil: " + milesForTk1903); // sonucu yazdır
+        System.out.println(flight2.getFlightNumber() + " toplam mil: " + milesForTk1903); // getFlightNumber = Lombok @Data
         System.out.println(); // boş satır
 
         System.out.println("=== Uygulama tamamlandı ==="); // bitiş mesajını yazdır
