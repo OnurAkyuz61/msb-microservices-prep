@@ -1,15 +1,19 @@
 // Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
-package com.msb.flightmiles; // uygulama kök paketi: giriş noktası burada
+package com.thy.miles.app; // app: uygulamanın giriş noktası (Main) paketidir
 
 // List arayüzünü kullanmak için import ederiz (business uçuş listesini tutmak için)
 import java.util.List; // Stream'den dönen List<Flight> tipi için gerekir
 
 // model paketinden Flight sınıfını kullanmak için import ederiz
-import com.msb.flightmiles.model.Flight; // Flight: uçuş bilgisi tutan sınıf (Lombok @Builder ile)
+import com.thy.miles.model.Flight; // Flight: uçuş bilgisi tutan sınıf (Lombok @Builder ile)
 // service paketinden FlightManager sınıfını kullanmak için import ederiz
-import com.msb.flightmiles.service.FlightManager; // FlightManager: List/Set/Map + Stream yönetimi
-// service paketinden MilesCalculator sınıfını kullanmak için import ederiz
-import com.msb.flightmiles.service.MilesCalculator; // MilesCalculator: klasik mil hesabı (Faz 1 başı)
+import com.thy.miles.service.FlightManager; // FlightManager: List/Set/Map + Stream yönetimi
+// strategy paketinden klasik üye hesaplayıcısını import ederiz
+import com.thy.miles.strategy.ClassicMemberMilesCalculator; // ClassicMemberMilesCalculator: klasik mil hesabı
+// strategy paketinden elite üye hesaplayıcısını import ederiz
+import com.thy.miles.strategy.EliteMemberMilesCalculator; // EliteMemberMilesCalculator: elite mil hesabı
+// strategy paketinden strateji arayüzünü import ederiz
+import com.thy.miles.strategy.MilesCalculatorStrategy; // MilesCalculatorStrategy: hesaplama sözleşmesi
 
 // Main sınıfı: Uygulamanın başlangıç noktasıdır (program buradan çalışır)
 public class Main { // Main adında bir sınıf tanımlıyoruz
@@ -57,7 +61,7 @@ public class Main { // Main adında bir sınıf tanımlıyoruz
 
         // --- FlightManager İLE KOLEKSİYONLARI DOLDURMA ---
 
-        // Uçuş yöneticisi nesnesini oluştur (içinde boş List, Set, Map hazır gelir)
+        // Uçuş yöneticisi nesnesini oluştur (içinde boş List, Set, Map + Classic strateji hazır gelir)
         FlightManager manager = new FlightManager(); // new ile FlightManager oluştur
 
         manager.addFlight(flight1); // 1. uçuşu List + Set + Map'e ekle
@@ -97,17 +101,23 @@ public class Main { // Main adında bir sınıf tanımlıyoruz
 
         // --- STREAM API: mapToInt + sum ile toplam mil ---
 
-        System.out.println("--- Stream mapToInt/sum: Toplam Mil ---"); // bölüm başlığı
+        System.out.println("--- Stream mapToInt/sum: Toplam Mil (Classic strateji) ---"); // bölüm başlığı
         int totalMiles = manager.calculateTotalMilesWithStream(); // tüm uçuşların mil toplamı
         System.out.println("STREAM sonucu - Toplam mil: " + totalMiles); // toplamı yazdır
         System.out.println(); // boş satır
 
-        // --- ESKİ MILES CALCULATOR DEMOSU (Faz 1 başındaki for/while hatırlatması) ---
+        // --- STRATEGY DEMOSU: Classic vs Elite ---
 
-        System.out.println("--- Klasik MilesCalculator (tek uçuş) ---"); // bölüm başlığı
-        MilesCalculator calculator = new MilesCalculator(); // klasik hesaplayıcı nesnesi
-        int milesForTk1903 = calculator.calculateMiles(flight2); // TK1903 için mil hesapla
-        System.out.println(flight2.getFlightNumber() + " toplam mil: " + milesForTk1903); // getFlightNumber = Lombok @Data
+        System.out.println("--- Strategy: ClassicMemberMilesCalculator (tek uçuş) ---"); // bölüm başlığı
+        MilesCalculatorStrategy classicCalculator = new ClassicMemberMilesCalculator(); // klasik strateji nesnesi
+        int milesClassic = classicCalculator.calculateMiles(flight2); // TK1903 için klasik mil
+        System.out.println(flight2.getFlightNumber() + " classic mil: " + milesClassic); // sonucu yazdır
+        System.out.println(); // boş satır
+
+        System.out.println("--- Strategy: EliteMemberMilesCalculator (tek uçuş) ---"); // bölüm başlığı
+        MilesCalculatorStrategy eliteCalculator = new EliteMemberMilesCalculator(); // elite strateji nesnesi
+        int milesElite = eliteCalculator.calculateMiles(flight2); // aynı uçuş için elite mil
+        System.out.println(flight2.getFlightNumber() + " elite mil: " + milesElite); // sonucu yazdır
         System.out.println(); // boş satır
 
         System.out.println("=== Uygulama tamamlandı ==="); // bitiş mesajını yazdır

@@ -1,5 +1,5 @@
 // Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
-package com.msb.flightmiles.model; // model: veri / varlık (entity) sınıflarının paketi
+package com.thy.miles.model; // model: sadece veriyi tutan sınıfların paketi
 
 // Lombok: @AllArgsConstructor anotasyonunu içeri alır
 import lombok.AllArgsConstructor; // derleme sırasında tüm alanları alan constructor üretir

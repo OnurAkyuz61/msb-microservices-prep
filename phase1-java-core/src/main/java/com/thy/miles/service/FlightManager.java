@@ -1,5 +1,5 @@
 // Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
-package com.msb.flightmiles.service; // service: iş kuralları / yönetim sınıflarının paketi
+package com.thy.miles.service; // service: iş mantığı ve uçuş yönetimi sınıflarının paketi
 
 // ArrayList: sıralı, tekrarlı eleman tutabilen List uygulamasıdır
 import java.util.ArrayList; // List arayüzünün en sık kullanılan somut sınıfı
@@ -16,8 +16,14 @@ import java.util.Map; // uçuş numarasına göre hızlı arama için
 // Set: tekrarsız eleman koleksiyonu arayüzü
 import java.util.Set; // benzersiz destinasyonlar için
 
-// model paketindeki Flight sınıfını bu dosyada kullanmak için import ederiz
-import com.msb.flightmiles.model.Flight; // Flight: Lombok @Data ile getter'ları üretilmiş model sınıfı
+// exception paketinden özel hata sınıfını import ederiz
+import com.thy.miles.exception.InvalidFlightDataException; // geçersiz uçuş verisi hatası
+// model paketinden Flight sınıfını import ederiz
+import com.thy.miles.model.Flight; // Flight: Lombok @Data ile getter'ları üretilmiş model sınıfı
+// strategy paketinden klasik hesaplayıcıyı import ederiz (varsayılan strateji)
+import com.thy.miles.strategy.ClassicMemberMilesCalculator; // klasik üye mil hesabı
+// strategy paketinden strateji arayüzünü import ederiz
+import com.thy.miles.strategy.MilesCalculatorStrategy; // mil hesabı sözleşmesi
 
 // FlightManager sınıfı: uçuşları List / Set / Map ile yönetir ve Stream API kullanır
 // Not: Flight nesnesi burada üretilmez; Main Lombok @Builder ile üretir, biz sadece getter kullanırız
@@ -32,8 +38,8 @@ public class FlightManager { // FlightManager adında bir sınıf tanımlıyoruz
     // Uçuş numarasına göre Flight nesnesini hızlı bulmak için harita (Map = anahtar -> değer)
     private Map<String, Flight> flightsByNumber; // HashMap ile doldurulacak alan
 
-    // Mil hesabında mevcut iş kurallarını yeniden kullanmak için hesaplayıcı
-    private MilesCalculator milesCalculator; // business / bonus kurallarını uygular
+    // Mil hesabında kullanılacak strateji (Classic veya Elite seçilebilir)
+    private MilesCalculatorStrategy milesCalculator; // interface tipinde tutulur (esnek tasarım)
 
     // --- CONSTRUCTOR: Manager oluşturulurken boş koleksiyonlar hazırlanır ---
 
@@ -42,13 +48,25 @@ public class FlightManager { // FlightManager adında bir sınıf tanımlıyoruz
         this.flights = new ArrayList<>(); // boş bir ArrayList başlatır
         this.destinations = new HashSet<>(); // boş bir HashSet başlatır
         this.flightsByNumber = new HashMap<>(); // boş bir HashMap başlatır
-        this.milesCalculator = new MilesCalculator(); // mil hesaplayıcı nesnesini oluşturur
+        this.milesCalculator = new ClassicMemberMilesCalculator(); // varsayılan: klasik üye stratejisi
     } // constructor metodunun kapanış süslü parantezi
+
+    // İstenirse farklı bir mil stratejisi (ör. Elite) enjekte etmek için yapıcı
+    public FlightManager(MilesCalculatorStrategy milesCalculator) { // parametre: kullanılacak strateji
+        this.flights = new ArrayList<>(); // boş liste
+        this.destinations = new HashSet<>(); // boş set
+        this.flightsByNumber = new HashMap<>(); // boş map
+        this.milesCalculator = milesCalculator; // dışarıdan verilen stratejiyi kullan
+    } // ikinci constructor'ın kapanış süslü parantezi
 
     // --- UÇUŞ EKLEME: Üç koleksiyonu birden günceller ---
 
     // Verilen Flight nesnesini List, Set ve Map yapılarına ekler
     public void addFlight(Flight flight) { // parametre: eklenecek uçuş
+        // Basit doğrulama: uçuş veya uçuş numarası yoksa özel exception fırlat
+        if (flight == null || flight.getFlightNumber() == null || flight.getFlightNumber().isBlank()) { // geçersiz veri mi?
+            throw new InvalidFlightDataException("Uçuş numarası boş olamaz."); // exception paketindeki hata sınıfı
+        } // if bloğunun kapanış süslü parantezi
         flights.add(flight); // List'e uçuşu sıranın sonuna ekler
         destinations.add(flight.getDestination()); // Set'e varışı ekler (aynı şehir tekrar eklenmez)
         flightsByNumber.put(flight.getFlightNumber(), flight); // Map'e "uçuşNo -> Flight" yazar
@@ -85,7 +103,7 @@ public class FlightManager { // FlightManager adında bir sınıf tanımlıyoruz
     public int calculateTotalMilesWithStream() { // dönüş: toplam mil (int)
         return flights // listedeki tüm uçuşlardan başla
                 .stream() // Stream API: uçuşları akışa çevirir
-                .mapToInt(flight -> milesCalculator.calculateMiles(flight)) // mapToInt: her Flight'ı int mile çevirir (IntStream üretir)
+                .mapToInt(flight -> milesCalculator.calculateMiles(flight)) // mapToInt: strateji ile int mile çevirir
                 .sum(); // sum: IntStream içindeki tüm int değerleri toplar
     } // calculateTotalMilesWithStream metodunun kapanış süslü parantezi
 

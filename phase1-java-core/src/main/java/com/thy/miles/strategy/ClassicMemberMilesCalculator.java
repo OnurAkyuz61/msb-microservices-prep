@@ -1,11 +1,11 @@
 // Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
-package com.msb.flightmiles.service; // service: iş kuralları / hesaplama sınıflarının paketi
+package com.thy.miles.strategy; // strategy: mil hesaplama kurallarının paketi
 
-// Başka paketteki Flight sınıfını bu dosyada kullanabilmek için import ederiz
-import com.msb.flightmiles.model.Flight; // model paketindeki Flight sınıfını içeri alır
+// model paketindeki Flight sınıfını kullanmak için import ederiz
+import com.thy.miles.model.Flight; // Flight: hesaplanacak uçuş nesnesi
 
-// MilesCalculator sınıfı: Uçuşlara göre mil hesaplamak için kullanılır
-public class MilesCalculator { // MilesCalculator adında bir sınıf tanımlıyoruz
+// ClassicMemberMilesCalculator: Klasik üye için mil hesabı (eski MilesCalculator kuralları)
+public class ClassicMemberMilesCalculator implements MilesCalculatorStrategy { // interface'i uygular (implements)
 
     // Temel mil katsayısı: her 1 km için kaç mil verileceğini tutar
     private static final int BASE_MILES_PER_KM = 1; // static final: sabit değer, değişmez
@@ -21,7 +21,8 @@ public class MilesCalculator { // MilesCalculator adında bir sınıf tanımlıy
 
     // --- TEK BİR UÇUŞ İÇİN MİL HESAPLAMA (if / else kullanır) ---
 
-    // Verilen Flight nesnesine göre kazanılacak mili hesaplar ve int olarak döndürür
+    // Strategy arayüzündeki metodun klasik üye uygulaması
+    @Override // bu metodun interface'ten geldiğini belirtir
     public int calculateMiles(Flight flight) { // parametre: hesaplanacak uçuş nesnesi
         int distance = flight.getDistanceKm(); // uçuşun mesafe bilgisini alıp distance değişkenine koyar
         boolean isBusiness = flight.isBusinessClass(); // business class mı bilgisini alır
@@ -32,16 +33,16 @@ public class MilesCalculator { // MilesCalculator adında bir sınıf tanımlıy
         // if / else: Business class ise çarpan uygula, değilse ekonomi kurallarını kullan
         if (isBusiness) { // eğer yolcu business class ise
             totalMiles = baseMiles * BUSINESS_MULTIPLIER; // temel mili 1.5 ile çarp
-            System.out.println("Business class: mil x " + BUSINESS_MULTIPLIER); // bilgi mesajı yazdır
+            System.out.println("Classic üye | Business class: mil x " + BUSINESS_MULTIPLIER); // bilgi mesajı yazdır
         } else { // değilse (ekonomi sınıfı)
             totalMiles = baseMiles; // ekonomi için ekstra çarpan yok
-            System.out.println("Ekonomi sınıfı: normal mil uygulanır"); // bilgi mesajı yazdır
+            System.out.println("Classic üye | Ekonomi sınıfı: normal mil uygulanır"); // bilgi mesajı yazdır
         } // if-else bloğunun kapanış süslü parantezi
 
         // if: Mesafe uzun uçuş eşiğini aşıyorsa bonus mil ekle
         if (distance > LONG_FLIGHT_THRESHOLD) { // mesafe 2000 km'den büyük mü?
             totalMiles = totalMiles + LONG_FLIGHT_BONUS; // toplam mile 500 bonus ekle
-            System.out.println("Uzun uçuş bonusu eklendi: +" + LONG_FLIGHT_BONUS); // bonus bilgisini yazdır
+            System.out.println("Classic üye | Uzun uçuş bonusu eklendi: +" + LONG_FLIGHT_BONUS); // bonus bilgisini yazdır
         } // uzun uçuş if bloğunun kapanış süslü parantezi
 
         int result = (int) totalMiles; // double değeri int'e çevir (ondalık kısmı atar)
@@ -84,4 +85,4 @@ public class MilesCalculator { // MilesCalculator adında bir sınıf tanımlıy
         return total; // toplam mili geri döndür
     } // calculateTotalMilesWithWhile metodunun kapanış süslü parantezi
 
-} // MilesCalculator sınıfının kapanış süslü parantezi
+} // ClassicMemberMilesCalculator sınıfının kapanış süslü parantezi

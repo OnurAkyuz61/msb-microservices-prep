@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- groupId: projenin kurumsal paket kökü (Maven koordinatı) -->
-    <groupId>com.msb</groupId>
+    <groupId>com.thy</groupId>
     <!-- artifactId: üretilen jar / proje kısa adı -->
     <artifactId>phase1-java-core</artifactId>
     <!-- version: proje sürümü (SNAPSHOT = geliştirme aşamasında) -->
@@ -97,7 +97,7 @@
                         <!-- manifest: META-INF/MANIFEST.MF içeriği -->
                         <manifest>
                             <!-- mainClass: java -jar ile çalışınca başlayacak sınıf -->
-                            <mainClass>com.msb.flightmiles.Main</mainClass>
+                            <mainClass>com.thy.miles.app.Main</mainClass>
                         </manifest>
                         <!-- manifest kapanışı -->
                     </archive>
