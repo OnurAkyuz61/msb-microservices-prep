@@ -1,0 +1,15 @@
+# Derlenmiş Java bytecode
+*.class
+
+# Eski elle derleme klasörü
+out/
+
+# Maven çıktısı (IntelliJ / mvn build buraya yazar)
+target/
+
+# IntelliJ IDEA dosyaları
+.idea/
+*.iml
+
+# OS
+.DS_Store

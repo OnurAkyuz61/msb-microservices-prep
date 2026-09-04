@@ -1,3 +1,11 @@
+// Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
+package com.msb.flightmiles; // uygulama kök paketi: giriş noktası burada
+
+// model paketinden Flight sınıfını kullanmak için import ederiz
+import com.msb.flightmiles.model.Flight; // Flight: uçuş bilgisi tutan sınıf
+// service paketinden MilesCalculator sınıfını kullanmak için import ederiz
+import com.msb.flightmiles.service.MilesCalculator; // MilesCalculator: mil hesaplayan sınıf
+
 // Main sınıfı: Uygulamanın başlangıç noktasıdır (program buradan çalışır)
 public class Main { // Main adında bir sınıf tanımlıyoruz
 

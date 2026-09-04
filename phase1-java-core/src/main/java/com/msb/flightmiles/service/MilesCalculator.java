@@ -1,3 +1,9 @@
+// Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
+package com.msb.flightmiles.service; // service: iş kuralları / hesaplama sınıflarının paketi
+
+// Başka paketteki Flight sınıfını bu dosyada kullanabilmek için import ederiz
+import com.msb.flightmiles.model.Flight; // model paketindeki Flight sınıfını içeri alır
+
 // MilesCalculator sınıfı: Uçuşlara göre mil hesaplamak için kullanılır
 public class MilesCalculator { // MilesCalculator adında bir sınıf tanımlıyoruz
 

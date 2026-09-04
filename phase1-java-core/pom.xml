@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IntelliJ'de New Project > Maven ile oluşan pom.xml benzeri proje tanımı -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- POM model sürümü: Maven 4.0.0 şemasını kullanıyoruz -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Grup kimliği: paket kökümüzle aynı (com.msb) -->
+    <groupId>com.msb</groupId>
+    <!-- Artifact kimliği: proje / jar adı -->
+    <artifactId>phase1-java-core</artifactId>
+    <!-- Sürüm: öğrenme projesi için 1.0-SNAPSHOT yeterli -->
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- Proje adı (IntelliJ Project görünümünde görünür) -->
+    <name>phase1-java-core</name>
+    <!-- Kısa açıklama -->
+    <description>Uçuş ve Mil Hesaplama - Java Core alıştırması</description>
+
+    <!-- Derleme ayarları -->
+    <properties>
+        <!-- Kaynak kod Java 17 -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <!-- Çıktı bytecode Java 17 -->
+        <maven.compiler.target>17</maven.compiler.target>
+        <!-- Dosya kodlaması UTF-8 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- jar çalıştırılırken ana sınıf (Main) -->
+    <build>
+        <plugins>
+            <!-- jar eklentisi: MANIFEST içine Main-Class yazar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- java -jar ile çalışınca bu sınıf başlar -->
+                            <mainClass>com.msb.flightmiles.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

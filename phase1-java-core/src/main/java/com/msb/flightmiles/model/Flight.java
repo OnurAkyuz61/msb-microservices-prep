@@ -1,3 +1,6 @@
+// Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
+package com.msb.flightmiles.model; // model: veri / varlık (entity) sınıflarının paketi
+
 // Flight sınıfı: Bir uçuşa ait bilgileri tutmak için kullanılır
 public class Flight { // Flight adında bir sınıf (class) tanımlıyoruz
 
