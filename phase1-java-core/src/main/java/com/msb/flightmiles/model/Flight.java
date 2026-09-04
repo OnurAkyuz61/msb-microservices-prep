@@ -6,8 +6,11 @@ public class Flight { // Flight adında bir sınıf (class) tanımlıyoruz
 
     // --- DEĞİŞKENLER (sınıfın alanları / fields) ---
 
-    // Uçuş numarasını metin (String) olarak saklar, örn: "TK123"
+    // Uçuş numarasını metin (String) olarak saklar, örn: "TK1903"
     private String flightNumber; // private: sadece bu sınıf içinden erişilebilir
+
+    // Uçuşun varış noktasını metin olarak saklar, örn: "Istanbul"
+    private String destination; // Set koleksiyonunda tekrarsız şehir listesi için kullanılır
 
     // Uçuş mesafesini kilometre cinsinden tam sayı (int) olarak saklar
     private int distanceKm; // mesafe değeri, örneğin 1500
@@ -17,9 +20,10 @@ public class Flight { // Flight adında bir sınıf (class) tanımlıyoruz
 
     // --- CONSTRUCTOR (yapıcı metot): Nesne oluşturulurken çalışır ---
 
-    // Yeni bir Flight nesnesi oluştururken uçuş bilgilerini parametre olarak alır
-    public Flight(String flightNumber, int distanceKm, boolean businessClass) { // parametreler: uçuş no, mesafe, business mi?
+    // Yeni bir Flight nesnesi oluştururken tüm uçuş bilgilerini parametre olarak alır
+    public Flight(String flightNumber, String destination, int distanceKm, boolean businessClass) { // dört parametreli yapıcı
         this.flightNumber = flightNumber; // gelen uçuş numarasını sınıf değişkenine atar
+        this.destination = destination; // gelen varış noktasını sınıf değişkenine atar
         this.distanceKm = distanceKm; // gelen mesafe bilgisini sınıf değişkenine atar
         this.businessClass = businessClass; // gelen business bilgisini sınıf değişkenine atar
     } // constructor metodunun kapanış süslü parantezi
@@ -30,6 +34,11 @@ public class Flight { // Flight adında bir sınıf (class) tanımlıyoruz
     public String getFlightNumber() { // dönüş tipi String olan bir metot
         return flightNumber; // flightNumber değişkeninin değerini geri verir
     } // getFlightNumber metodunun kapanış süslü parantezi
+
+    // Varış noktasını dışarıya döndüren metot
+    public String getDestination() { // dönüş tipi String olan bir metot
+        return destination; // destination değişkeninin değerini geri verir
+    } // getDestination metodunun kapanış süslü parantezi
 
     // Mesafe bilgisini dışarıya döndüren metot
     public int getDistanceKm() { // dönüş tipi int olan bir metot
@@ -48,6 +57,11 @@ public class Flight { // Flight adında bir sınıf (class) tanımlıyoruz
         this.flightNumber = flightNumber; // yeni uçuş numarasını sınıf değişkenine yazar
     } // setFlightNumber metodunun kapanış süslü parantezi
 
+    // Varış noktasını değiştirmek için kullanılan metot
+    public void setDestination(String destination) { // String tipinde yeni varış alır
+        this.destination = destination; // yeni varış noktasını sınıf değişkenine yazar
+    } // setDestination metodunun kapanış süslü parantezi
+
     // Mesafe bilgisini değiştirmek için kullanılan metot
     public void setDistanceKm(int distanceKm) { // int tipinde yeni mesafe alır
         this.distanceKm = distanceKm; // yeni mesafe değerini sınıf değişkenine yazar
@@ -63,6 +77,7 @@ public class Flight { // Flight adında bir sınıf (class) tanımlıyoruz
     // Uçuş bilgilerini ekrana (konsola) yazdıran basit bir metot
     public void printFlightInfo() { // void: ekrana yazar, değer döndürmez
         System.out.println("Uçuş No   : " + flightNumber); // uçuş numarasını yazdırır
+        System.out.println("Varış     : " + destination); // varış noktasını yazdırır
         System.out.println("Mesafe    : " + distanceKm + " km"); // mesafeyi km ile yazdırır
         System.out.println("Business  : " + businessClass); // business durumunu yazdırır
     } // printFlightInfo metodunun kapanış süslü parantezi

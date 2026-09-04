@@ -1,10 +1,15 @@
 // Bu dosyanın hangi pakette (klasör yolunda) yaşadığını Java'ya bildirir
 package com.msb.flightmiles; // uygulama kök paketi: giriş noktası burada
 
+// List arayüzünü kullanmak için import ederiz (business uçuş listesini tutmak için)
+import java.util.List; // Stream'den dönen List<Flight> tipi için gerekir
+
 // model paketinden Flight sınıfını kullanmak için import ederiz
 import com.msb.flightmiles.model.Flight; // Flight: uçuş bilgisi tutan sınıf
+// service paketinden FlightManager sınıfını kullanmak için import ederiz
+import com.msb.flightmiles.service.FlightManager; // FlightManager: List/Set/Map + Stream yönetimi
 // service paketinden MilesCalculator sınıfını kullanmak için import ederiz
-import com.msb.flightmiles.service.MilesCalculator; // MilesCalculator: mil hesaplayan sınıf
+import com.msb.flightmiles.service.MilesCalculator; // MilesCalculator: klasik mil hesabı (Faz 1 başı)
 
 // Main sınıfı: Uygulamanın başlangıç noktasıdır (program buradan çalışır)
 public class Main { // Main adında bir sınıf tanımlıyoruz
@@ -17,51 +22,68 @@ public class Main { // Main adında bir sınıf tanımlıyoruz
 
         // --- Flight NESNELERİ OLUŞTURMA (object creation) ---
 
-        // 1. uçuş: kısa mesafe, ekonomi sınıfı
-        Flight flight1 = new Flight("TK101", 850, false); // new: bellekte yeni bir Flight nesnesi yaratır
-        // 2. uçuş: uzun mesafe, business sınıfı
-        Flight flight2 = new Flight("TK250", 3200, true); // uçuş no TK250, 3200 km, business = true
-        // 3. uçuş: orta mesafe, ekonomi sınıfı
-        Flight flight3 = new Flight("PC404", 2100, false); // uçuş no PC404, 2100 km, business = false
+        // 1. uçuş: İstanbul, kısa mesafe, ekonomi
+        Flight flight1 = new Flight("TK101", "Istanbul", 850, false); // new: bellekte yeni Flight yaratır
+        // 2. uçuş: New York, uzun mesafe, business
+        Flight flight2 = new Flight("TK1903", "New York", 3200, true); // örnek uçuş no: TK1903
+        // 3. uçuş: Antalya, orta mesafe, ekonomi
+        Flight flight3 = new Flight("PC404", "Antalya", 2100, false); // ekonomi sınıfı uçuş
+        // 4. uçuş: yine İstanbul (Set'te "Istanbul" tekrar eklenmeyecek)
+        Flight flight4 = new Flight("TK250", "Istanbul", 450, true); // ikinci business uçuş
 
-        System.out.println("--- Uçuş Bilgileri ---"); // bölüm başlığı yazdır
-        flight1.printFlightInfo(); // 1. uçuşun bilgilerini ekrana yaz
-        System.out.println(); // boş satır
-        flight2.printFlightInfo(); // 2. uçuşun bilgilerini ekrana yaz
-        System.out.println(); // boş satır
-        flight3.printFlightInfo(); // 3. uçuşun bilgilerini ekrana yaz
-        System.out.println(); // boş satır
+        // --- FlightManager İLE KOLEKSİYONLARI DOLDURMA ---
 
-        // --- MilesCalculator NESNESİ OLUŞTURMA ---
+        // Uçuş yöneticisi nesnesini oluştur (içinde boş List, Set, Map hazır gelir)
+        FlightManager manager = new FlightManager(); // new ile FlightManager oluştur
 
-        // Mil hesaplayıcı sınıfından bir nesne üret
-        MilesCalculator calculator = new MilesCalculator(); // new ile MilesCalculator nesnesi oluştur
+        manager.addFlight(flight1); // 1. uçuşu List + Set + Map'e ekle
+        manager.addFlight(flight2); // 2. uçuşu List + Set + Map'e ekle
+        manager.addFlight(flight3); // 3. uçuşu List + Set + Map'e ekle
+        manager.addFlight(flight4); // 4. uçuşu List + Set + Map'e ekle
 
-        System.out.println("--- Tek Uçuş Mil Hesabı ---"); // bölüm başlığı
-        int miles1 = calculator.calculateMiles(flight1); // flight1 için mil hesapla ve miles1'e kaydet
-        System.out.println(flight1.getFlightNumber() + " toplam mil: " + miles1); // sonucu yazdır
+        System.out.println("--- Tüm Uçuşlar (List) ---"); // bölüm başlığı
+        manager.printAllFlights(); // listedeki tüm uçuşları yazdır
         System.out.println(); // boş satır
 
-        int miles2 = calculator.calculateMiles(flight2); // flight2 için mil hesapla
-        System.out.println(flight2.getFlightNumber() + " toplam mil: " + miles2); // sonucu yazdır
+        System.out.println("--- Benzersiz Varışlar (Set) ---"); // bölüm başlığı
+        manager.printDestinations(); // Set içeriğini yazdır (Istanbul bir kez görünür)
         System.out.println(); // boş satır
 
-        // --- DİZİ (array) İLE BİRDEN FAZLA UÇUŞ ---
-
-        // Üç uçuşu bir dizi içinde tutuyoruz
-        Flight[] flights = new Flight[3]; // 3 elemanlı Flight dizisi oluştur
-        flights[0] = flight1; // dizinin 0. indexine flight1'i koy
-        flights[1] = flight2; // dizinin 1. indexine flight2'yi koy
-        flights[2] = flight3; // dizinin 2. indexine flight3'ü koy
-
-        System.out.println("--- for Döngüsü ile Toplam Mil ---"); // bölüm başlığı
-        int totalWithFor = calculator.calculateTotalMilesWithFor(flights); // for ile toplam mil hesapla
-        System.out.println("FOR sonucu - Toplam mil: " + totalWithFor); // for sonucunu yazdır
+        System.out.println("--- Map ile Hızlı Arama ---"); // bölüm başlığı
+        Flight found = manager.findFlightByNumber("TK1903"); // Map'ten "TK1903" anahtarını ara
+        if (found != null) { // eğer uçuş bulunduysa (null değilse)
+            System.out.println("Bulunan uçuş:"); // bilgilendirme mesajı
+            found.printFlightInfo(); // bulunan uçuşun detaylarını yazdır
+        } else { // uçuş bulunamadıysa
+            System.out.println("Uçuş bulunamadı."); // hata / bilgi mesajı
+        } // if-else bloğunun kapanış süslü parantezi
         System.out.println(); // boş satır
 
-        System.out.println("--- while Döngüsü ile Toplam Mil ---"); // bölüm başlığı
-        int totalWithWhile = calculator.calculateTotalMilesWithWhile(flights); // while ile toplam mil hesapla
-        System.out.println("WHILE sonucu - Toplam mil: " + totalWithWhile); // while sonucunu yazdır
+        // --- STREAM API: Business Class filtreleme ---
+
+        System.out.println("--- Stream filter: Business Class Uçuşlar ---"); // bölüm başlığı
+        List<Flight> businessFlights = manager.getBusinessClassFlights(); // filter + collect sonucu
+        System.out.println("Business uçuş sayısı: " + businessFlights.size()); // kaç business uçuş var
+        // for-each ile filtrelenmiş listeyi gezip yazdır
+        for (Flight businessFlight : businessFlights) { // her business uçuş için döner
+            businessFlight.printFlightInfo(); // uçuş bilgilerini yazdır
+            System.out.println("-----"); // ayırıcı çizgi
+        } // for-each döngüsünün kapanış süslü parantezi
+        System.out.println(); // boş satır
+
+        // --- STREAM API: mapToInt + sum ile toplam mil ---
+
+        System.out.println("--- Stream mapToInt/sum: Toplam Mil ---"); // bölüm başlığı
+        int totalMiles = manager.calculateTotalMilesWithStream(); // tüm uçuşların mil toplamı
+        System.out.println("STREAM sonucu - Toplam mil: " + totalMiles); // toplamı yazdır
+        System.out.println(); // boş satır
+
+        // --- ESKİ MILES CALCULATOR DEMOSU (Faz 1 başındaki for/while hatırlatması) ---
+
+        System.out.println("--- Klasik MilesCalculator (tek uçuş) ---"); // bölüm başlığı
+        MilesCalculator calculator = new MilesCalculator(); // klasik hesaplayıcı nesnesi
+        int milesForTk1903 = calculator.calculateMiles(flight2); // TK1903 için mil hesapla
+        System.out.println(flight2.getFlightNumber() + " toplam mil: " + milesForTk1903); // sonucu yazdır
         System.out.println(); // boş satır
 
         System.out.println("=== Uygulama tamamlandı ==="); // bitiş mesajını yazdır
