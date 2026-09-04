@@ -40,16 +40,22 @@ bin/
 
 # --- IntelliJ IDEA ---
 .idea/
+# phase1-java-core altında paylaşılacak inspection profilleri
+!phase1-java-core/.idea/
+phase1-java-core/.idea/*
+!phase1-java-core/.idea/inspectionProfiles/
+!phase1-java-core/.idea/inspectionProfiles/**
 *.iml
 *.iws
 *.ipr
 out/
 
-# --- Eclipse / VS Code ---
+# --- Eclipse / VS Code / Cursor workspace ---
 .classpath
 .project
 .settings/
-.vscode/
+.vscode/*
+!.vscode/settings.json
 *.code-workspace
 
 # --- Cursor ---

@@ -1,0 +1,15 @@
+{
+  "version": "0.2",
+  "language": "en,tr",
+  "ignorePaths": [
+    "**/target/**",
+    "**/.git/**",
+    "**/out/**"
+  ],
+  "overrides": [
+    {
+      "filename": "**/*.{java,xml}",
+      "enabled": false
+    }
+  ]
+}
