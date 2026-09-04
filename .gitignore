@@ -1,0 +1,84 @@
+# =========================
+# MSB Microservices Prep
+# =========================
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# --- Java / derleme ---
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# --- Maven ---
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# --- Gradle (ilerleyen fazlar) ---
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# --- Elle / eski derleme çıktısı ---
+out/
+bin/
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# --- Eclipse / VS Code ---
+.classpath
+.project
+.settings/
+.vscode/
+*.code-workspace
+
+# --- Cursor ---
+.cursor/
+.cursorignore
+
+# --- Log / geçici ---
+*.log
+*.tmp
+*.temp
+logs/
+
+# --- Ortam değişkenleri / gizli bilgiler ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets/
+
+# --- Spring Boot (ilerleyen fazlar) ---
+spring-boot-*.log
+*.pid
+
+# --- Test / coverage ---
+.jacoco/
+coverage/
+*.exec
+
+# --- Node (ileride yardımcı araçlar olursa) ---
+node_modules/
