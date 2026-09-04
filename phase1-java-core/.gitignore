@@ -7,10 +7,8 @@ out/
 # Maven çıktısı (IntelliJ / mvn build buraya yazar)
 target/
 
-# IntelliJ IDEA dosyaları (inspection profili hariç — Türkçe / System.out uyarıları)
-.idea/*
-!.idea/inspectionProfiles/
-!.idea/inspectionProfiles/**
+# IntelliJ IDEA
+.idea/
 *.iml
 
 # OS

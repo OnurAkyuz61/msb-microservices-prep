@@ -1,10 +1,8 @@
 # Maven çıktısı
 target/
 
-# IntelliJ
-.idea/*
-!.idea/inspectionProfiles/
-!.idea/inspectionProfiles/**
+# IntelliJ IDEA
+.idea/
 *.iml
 
 # Derleme artıkları

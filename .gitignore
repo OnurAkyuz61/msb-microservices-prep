@@ -38,24 +38,18 @@ build/
 out/
 bin/
 
-# --- IntelliJ IDEA ---
+# --- IntelliJ IDEA (tüm .idea ve modül dosyaları ignore) ---
 .idea/
-# phase1-java-core altında paylaşılacak inspection profilleri
-!phase1-java-core/.idea/
-phase1-java-core/.idea/*
-!phase1-java-core/.idea/inspectionProfiles/
-!phase1-java-core/.idea/inspectionProfiles/**
+**/.idea/
 *.iml
 *.iws
 *.ipr
-out/
 
-# --- Eclipse / VS Code / Cursor workspace ---
+# --- Eclipse / VS Code / Cursor (IDE ayarları repoya girmez) ---
 .classpath
 .project
 .settings/
-.vscode/*
-!.vscode/settings.json
+.vscode/
 *.code-workspace
 
 # --- Cursor ---
