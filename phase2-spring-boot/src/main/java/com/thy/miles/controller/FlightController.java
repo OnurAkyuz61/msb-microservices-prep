@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController; // @RestControlle
  */
 @RequiredArgsConstructor // Lombok: final alanlar için constructor üretir -> Spring DI bu constructor'ı kullanır
 // FlightController: Uçuşları HTTP üzerinden dışarıya sunan REST controller
-public class FlightController { // public class: DispatcherServlet bu Bean'e istek yönlendirir
+public class    FlightController { // public class: DispatcherServlet bu Bean'e istek yönlendirir
 
     // flightService: iş mantığı Bean'i (final = constructor injection ile set edilir, sonra değişmez)
     private final FlightService flightService; // Spring, FlightService Bean'ini buraya enjekte eder
