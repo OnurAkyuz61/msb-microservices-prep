@@ -79,7 +79,7 @@ cd msb-microservices-prep
 
 1. Sol Project ağacından şu dosyaya gidin:
 
-   `phase1-java-core/src/main/java/com/msb/flightmiles/Main.java`
+   `phase1-java-core/src/main/java/com/thy/miles/app/Main.java`
 
 2. `main` metodunun yanındaki yeşil ▶️ simgesine tıklayın  
    **veya** dosyaya sağ tıklayıp **Run 'Main.main()'** seçin
@@ -93,7 +93,7 @@ IntelliJ Maven paneli veya terminal:
 ```bash
 cd phase1-java-core
 mvn -q compile
-java -cp target/classes com.msb.flightmiles.Main
+java -cp target/classes com.thy.miles.app.Main
 ```
 
 Maven yoksa (yalnızca `javac` / `java`):
@@ -101,7 +101,7 @@ Maven yoksa (yalnızca `javac` / `java`):
 ```bash
 cd phase1-java-core
 javac -d target/classes $(find src/main/java -name "*.java")
-java -cp target/classes com.msb.flightmiles.Main
+java -cp target/classes com.thy.miles.app.Main
 ```
 
 ---
@@ -119,12 +119,19 @@ msb-microservices-prep/
     └── src/
         ├── main/
         │   ├── java/
-        │   │   └── com/msb/flightmiles/
-        │   │       ├── Main.java                 # Uygulama giriş noktası
+        │   │   └── com/thy/miles/
+        │   │       ├── app/
+        │   │       │   └── Main.java                          # Uygulama giriş noktası
         │   │       ├── model/
-        │   │       │   └── Flight.java           # Uçuş bilgisi (entity)
-        │   │       └── service/
-        │   │           └── MilesCalculator.java  # Mil hesaplama (iş kuralı)
+        │   │       │   └── Flight.java                        # Uçuş bilgisi (entity)
+        │   │       ├── service/
+        │   │       │   └── FlightManager.java                 # List/Set/Map + Stream yönetimi
+        │   │       ├── strategy/
+        │   │       │   ├── MilesCalculatorStrategy.java       # Hesaplama sözleşmesi
+        │   │       │   ├── ClassicMemberMilesCalculator.java  # Klasik üye kuralları
+        │   │       │   └── EliteMemberMilesCalculator.java    # Elite üye kuralları
+        │   │       └── exception/
+        │   │           └── InvalidFlightDataException.java    # Geçersiz veri hatası
         │   └── resources/
         └── test/
             └── java/
@@ -134,9 +141,13 @@ msb-microservices-prep/
 
 | Sınıf | Paket | Görev |
 |-------|--------|--------|
-| `Main` | `com.msb.flightmiles` | Nesneleri oluşturur, uygulamayı çalıştırır |
-| `Flight` | `com.msb.flightmiles.model` | Uçuş no, mesafe, business class bilgisi |
-| `MilesCalculator` | `com.msb.flightmiles.service` | if/else ve döngülerle mil hesaplar |
+| `Main` | `com.thy.miles.app` | Nesneleri oluşturur, uygulamayı çalıştırır |
+| `Flight` | `com.thy.miles.model` | Uçuş no, mesafe, business class bilgisi |
+| `FlightManager` | `com.thy.miles.service` | Uçuşları List/Set/Map ile yönetir |
+| `MilesCalculatorStrategy` | `com.thy.miles.strategy` | Mil hesabı arayüzü |
+| `ClassicMemberMilesCalculator` | `com.thy.miles.strategy` | Klasik üye mil kuralları |
+| `EliteMemberMilesCalculator` | `com.thy.miles.strategy` | Elite üye mil kuralları |
+| `InvalidFlightDataException` | `com.thy.miles.exception` | Geçersiz uçuş verisi hatası |
 
 ---
 
